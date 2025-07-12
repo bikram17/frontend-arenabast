@@ -25,7 +25,7 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "build/*"
-        target: "/var/www/react-app"
+        target: "/var/www/admin-panle"
 
     - name: Restart Docker (Optional)
       uses: appleboy/ssh-action@master
@@ -36,4 +36,4 @@ jobs:
         script: |
           docker stop my-react-app || true
           docker rm my-react-app || true
-          docker run -d -p 3000:80 --name my-react-app -v /var/www/react-app:/usr/share/nginx/html nginx:alpine
+          docker run -d -p 3000:80 --name my-react-app -v /var/www/admin-panle:/usr/share/nginx/html nginx:alpine
