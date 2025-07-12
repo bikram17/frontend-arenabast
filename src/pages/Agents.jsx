@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button,  Space, Input, Modal, Tag, notification } from "antd";
+import { Table, Button,  Space, Input, Modal, Tag, notification, Dropdown } from "antd";
 import { GoPlus } from "react-icons/go";
 import {
   EyeOutlined,
@@ -13,14 +13,20 @@ import { deleteUserById, } from "../features/userSlice";
 import { getAllAgents } from "../api/userApi";
 import dayjs from "dayjs";
 import CreateAgent from "./CreateAgent";
+import AddWalletBalance from "../components/AddWalletBalance";
+import { BsThreeDots } from "react-icons/bs";
+import { addWalletBalanceToAdmin } from "../api/walletApi";
 
 const Agents = () => {
 
 
   const [isCreate, setIsCreate]=useState(false);
   const dispatch = useDispatch();
-
   const [alluser, setAllUser]=useState([]);
+  const [isWallet, setIsWallet]=useState("");
+  const [userInfo, setUserInfo]=useState(null);
+  const [walletLoading, setWalletLoading]=useState(false);
+  const [balance, setBalance]=useState("");
 
 
   const fetchAllAgents=async()=>{
@@ -65,13 +71,19 @@ const Agents = () => {
     });
   };
 
+
+  const handleAddWalletModalOpen = (record) => {
+    setIsWallet(true);
+    setUserInfo(record);
+  };
+
+  const handleAddWalletModalClose=()=>{
+    setIsWallet(false);
+    setUserInfo(null)
+    setBalance("")
+  }
   
 
-  // Function to handle the switch state change
-  // const handleStatusChange = (id, checked) => {
-  //   console.log(`Staff ID: ${id}, Active: ${checked}`);
-  //   // Update logic for the switch state can be added here, e.g., making an API call
-  // };
 
 
 
@@ -122,6 +134,31 @@ const Agents = () => {
         ),
     },
     {
+      title: "",
+      key: "",
+      width: 150,
+      render: (text, record) => {
+        const items = [
+          {
+            key: "AddWalletBalance",
+            label: (
+              <span
+               onClick={() => handleAddWalletModalOpen(record)}
+              >
+                Add Wallet Balance
+              </span>
+            ),
+          },
+        ];
+
+        return (
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <BsThreeDots className="text-xl text-zinc-600 cursor-pointer" />
+          </Dropdown>
+        );
+      },
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (
@@ -140,8 +177,37 @@ const Agents = () => {
   ];
 
 
+
+
+
+
   
 
+  const addAdminWalletBalance = async () => {
+    setWalletLoading(true);
+    try {
+       const payload={
+        userId: userInfo.id,
+        amount: balance,
+       }
+      const {data}=await addWalletBalanceToAdmin(payload);
+      console.log("Data", data)
+      if(data.status){
+        setWalletLoading(false);
+        notification.success({
+          message: 'Success',
+          description: 'Wallet balance has been added successfully.',
+        });
+        handleAddWalletModalClose();
+      }   
+    } catch (error) {
+      setWalletLoading(false);
+      notification.error({
+        message: 'Error',
+        description: 'Failed to add wallet balance. Please try again.',
+      });
+    }
+  };
 
   return (
     <div className=" p-4 md:p-6">
@@ -224,6 +290,16 @@ const Agents = () => {
 
     
       </Modal>
+
+      <AddWalletBalance 
+       isWallet={isWallet}
+       onClose={handleAddWalletModalClose}
+       userInfo={userInfo}
+       balance={balance}
+       setBalance={setBalance}
+       walletLoading={walletLoading}
+       addBalance={addAdminWalletBalance}
+     />
     </div>
   );
 };

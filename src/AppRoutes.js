@@ -9,6 +9,7 @@ import TransferRequset from "./pages/TransferRequset";
 import History from "./pages/History";
 import Agents from "./pages/Agents";
 import Players from "./pages/Players";
+import Wallet from "./pages/Wallet";
 
 
 
@@ -82,6 +83,13 @@ const routes = [
   {
     path: "/history",
     element: History,
+    layout: RootLayout,
+    protected: true,
+  },
+
+  {
+    path: "/wallet",
+    element: Wallet,
     layout: RootLayout,
     protected: true,
   },

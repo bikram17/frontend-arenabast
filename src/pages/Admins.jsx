@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button,  Space, Input, Modal,  Tag, notification } from "antd";
+import { Table, Button, Space, Input, Modal, Tag, notification, Dropdown } from "antd";
 import { GoPlus } from "react-icons/go";
+import {BsThreeDots} from "react-icons/bs"
 import {
   EyeOutlined,
   EditOutlined,
@@ -9,79 +10,83 @@ import {
   FileExcelOutlined,
 } from "@ant-design/icons";
 
-import { useDispatch,  } from "react-redux";
-import { deleteUserById, } from "../features/userSlice";
+import { useDispatch } from "react-redux";
+import { deleteUserById } from "../features/userSlice";
 import CreateUser from "./CreateUser";
 import { getAllAdmins } from "../api/userApi";
 import dayjs from "dayjs";
+import AddWalletBalance from "../components/AddWalletBalance";
+import { addWalletBalanceToAdmin } from "../api/walletApi";
 
 const Admins = () => {
-
-  const [isCreate, setIsCreate]=useState(false);
+  const [isCreate, setIsCreate] = useState(false);
   const dispatch = useDispatch();
-  const [alluser, setAllUser]=useState([]);
-
-
- 
-
-
+  const [alluser, setAllUser] = useState([]);
+  const [isWallet, setIsWallet]=useState("");
+  const [userInfo, setUserInfo]=useState(null);
+  const [walletLoading, setWalletLoading]=useState(false);
+  const [balance, setBalance]=useState("");
   // const handleUpload = (info) => {
   //   console.log("File uploaded:", info.file);
   //   // Add file processing logic here
   // };
 
+  const handleAddWalletModalOpen = (record) => {
+    setIsWallet(true);
+    setUserInfo(record);
+  };
 
-  const fetchAllAdmins=async()=>{
-    try {
-      const {data}= await getAllAdmins();
-      if(data.status){
-      setAllUser(data.data)
-      }
-    } catch (error) {
-      console.log(error)
-    }
+  const handleAddWalletModalClose=()=>{
+    setIsWallet(false);
+    setUserInfo(null)
+    setBalance("")
   }
 
-
+  const fetchAllAdmins = async () => {
+    try {
+      const { data } = await getAllAdmins();
+      if (data.status) {
+        setAllUser(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-     fetchAllAdmins();
+    fetchAllAdmins();
   }, []);
 
   const handleDeleteUser = (id) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete this user?',
-      content: 'This action cannot be undone.',
-      okText: 'Yes, Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
+      title: "Are you sure you want to delete this user?",
+      content: "This action cannot be undone.",
+      okText: "Yes, Delete",
+      okType: "danger",
+      cancelText: "Cancel",
       onOk: () => {
         dispatch(deleteUserById(id))
           .then(() => {
             notification.success({
-              message: 'User Deleted',
-              description: 'The user has been successfully deleted.',
+              message: "User Deleted",
+              description: "The user has been successfully deleted.",
             });
           })
           .catch(() => {
             notification.error({
-              message: 'Delete Failed',
-              description: 'An error occurred while trying to delete the user.',
+              message: "Delete Failed",
+              description: "An error occurred while trying to delete the user.",
             });
           });
       },
     });
   };
 
-  
-
   // Function to handle the switch state change
   // const handleStatusChange = (id, checked) => {
   //   console.log(`Staff ID: ${id}, Active: ${checked}`);
   //   // Update logic for the switch state can be added here, e.g., making an API call
   // };
-
-
 
   const columns = [
     {
@@ -119,6 +124,33 @@ const Admins = () => {
           <Tag color="red">Inactive</Tag>
         ),
     },
+
+    {
+      title: "",
+      key: "",
+      width: 150,
+      render: (text, record) => {
+        const items = [
+          {
+            key: "AddWalletBalance",
+            label: (
+              <span
+               onClick={() => handleAddWalletModalOpen(record)}
+              >
+                Add Wallet Balance
+              </span>
+            ),
+          },
+        ];
+
+        return (
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <BsThreeDots className="text-xl text-zinc-600 cursor-pointer" />
+          </Dropdown>
+        );
+      },
+    },
+
     {
       title: "Action",
       key: "action",
@@ -126,11 +158,16 @@ const Admins = () => {
         <Space>
           <Button icon={<EyeOutlined />} type="link" />
           <Button
-          //  onClick={()=>navigate(`/edit/${record.staff_id}`)}
-           icon={<EditOutlined />} type="link" />
+            //  onClick={()=>navigate(`/edit/${record.staff_id}`)}
+            icon={<EditOutlined />}
+            type="link"
+          />
           <Button
-           onClick={()=>handleDeleteUser(record.staff_id)}
-           icon={<DeleteOutlined />} type="link" danger />
+            onClick={() => handleDeleteUser(record.staff_id)}
+            icon={<DeleteOutlined />}
+            type="link"
+            danger
+          />
         </Space>
       ),
       align: "center",
@@ -138,16 +175,39 @@ const Admins = () => {
   ];
 
 
+  const addAdminWalletBalance = async () => {
+    setWalletLoading(true);
+    try {
+       const payload={
+        userId: userInfo.id,
+        amount: balance,
+       }
+      const {data}=await addWalletBalanceToAdmin(payload);
+      console.log("Data", data)
+      if(data.status){
+        setWalletLoading(false);
+        notification.success({
+          message: 'Success',
+          description: 'Wallet balance has been added successfully.',
+        });
+        handleAddWalletModalClose();
+      }   
+    } catch (error) {
+      setWalletLoading(false);
+      notification.error({
+        message: 'Error',
+        description: 'Failed to add wallet balance. Please try again.',
+      });
+    }
+  };
   
-
-
   return (
     <div className=" p-4 md:p-6">
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-between pb-4">
-        <h1 className="heading">Manage Users</h1>
+        <h1 className="heading">Manage Admins</h1>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <button
-            onClick={()=>setIsCreate(true)}
+            onClick={() => setIsCreate(true)}
             className="green-button flex items-center justify-center gap-2 px-4 py-2 text-sm sm:text-base"
           >
             <span>
@@ -196,14 +256,11 @@ const Admins = () => {
         />
       </div>
 
-     
-    
 
-
-
+     {/* Modal Open */}
       <Modal
         open={isCreate}
-        onCancel={()=>setIsCreate(false)}
+        onCancel={() => setIsCreate(false)}
         footer={null}
         className="rounded-lg shadow-lg p-0 max-w-lg"
         centered
@@ -213,18 +270,32 @@ const Admins = () => {
         <div className="bg-gradient-to-r from-green-500 to-green-700 p-6 text-white rounded-t-lg">
           <h2 className="text-xl font-semibold text-center">Create Admin</h2>
           <p className="text-sm text-center mt-2">
-          Fill in the required details below to create a new user account. Ensure all fields are accurate to successfully register the user in the system.
+            Fill in the required details below to create a new user account.
+            Ensure all fields are accurate to successfully register the user in
+            the system.
           </p>
         </div>
-         <div className="p-6">
-          <CreateUser
-             setIsCreate={setIsCreate}
-             fetchAllAdmins={fetchAllAdmins}
-          />
-         </div>
 
-    
+
+        <div className="p-6">
+          <CreateUser
+            setIsCreate={setIsCreate}
+            fetchAllAdmins={fetchAllAdmins}
+          />
+        </div>
+
+        
       </Modal>
+
+     <AddWalletBalance 
+       isWallet={isWallet}
+       onClose={handleAddWalletModalClose}
+       userInfo={userInfo}
+       balance={balance}
+       setBalance={setBalance}
+       walletLoading={walletLoading}
+       addBalance={addAdminWalletBalance}
+     />
     </div>
   );
 };

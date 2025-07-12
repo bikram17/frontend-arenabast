@@ -10,6 +10,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import logo from "../assets/logo.png";
 import { MdLogout } from "react-icons/md";
 import userPhoto from "../assets/user.jpg";
+import { FaWallet } from "react-icons/fa6";
 const AdminSidebar = () => {
   const { isSidebarOpen } = useSelector((state) => state.mobileSidebar);
   const { name, email, role,} = useSelector((state) => state.auth);
@@ -90,6 +91,13 @@ const AdminSidebar = () => {
       label: "Players",
       icon: <FaUsers />,
       to: "/players",
+      roles: ["ADMIN", "AGENT", "SUPER_ADMIN"],
+    },
+    {
+      key: "mywallet",
+      label: "My Wallet",
+      icon: <FaWallet />,
+      to: "/wallet",
       roles: ["ADMIN", "AGENT", "SUPER_ADMIN"],
     },
     {

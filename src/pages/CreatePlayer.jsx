@@ -6,6 +6,7 @@ import {
   createPlayer,
   getAdminAndAgents,
 } from "../api/userApi";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
@@ -17,8 +18,8 @@ const validationSchema = Yup.object({
   password: Yup.string()
     .required("Password is required")
     .min(6, "Password must be at least 6 characters"),
-  agentId: Yup.string().required("Agent selection is required"),
-  adminId: Yup.string().required("Admin selection is required"),
+  agentId: Yup.string(),
+  adminId: Yup.string(),
   dateOfBirth: Yup.string().required("Date of birth is required"),
   phone: Yup.string(),
   address: Yup.string(),
@@ -31,6 +32,7 @@ const CreatePlayer = ({
   const [loading, setLoading] = useState(false);
   const [allAdminWithAgent, setAllAdminWithAgent] = useState([]);
   const [agentsForSelectedAdmin, setAgentsForSelectedAdmin] = useState([]);
+  const { role } = useSelector((state) => state.auth);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -79,6 +81,7 @@ const CreatePlayer = ({
       const { data } = await getAdminAndAgents();
       if (data.status) {
         setAllAdminWithAgent(data.data);
+       
       }
     } catch (error) {
       console.log(error);
@@ -99,6 +102,21 @@ const CreatePlayer = ({
     setFieldValue,
   } = formik;
 
+
+
+  useEffect(()=>{
+    if(role==="ADMIN"){
+      setFieldValue("adminId", allAdminWithAgent[0]?.adminId);
+      setAgentsForSelectedAdmin(allAdminWithAgent[0].agents)
+    }
+
+  },[role, setFieldValue, allAdminWithAgent, setAgentsForSelectedAdmin])
+   
+
+
+   console.log("All admin with agent", allAdminWithAgent);
+
+
   const handleAdminChange = (value) => {
     setFieldValue("adminId", value);
     setFieldValue("agentId", undefined); // reset previous agentId
@@ -114,11 +132,14 @@ const CreatePlayer = ({
       if (agents.length === 1) {
         // auto-select if only one agent
         setFieldValue("agentId", agents[0].agentId);
+      
       }
     } else {
       setAgentsForSelectedAdmin([]);
     }
   };
+
+   
 
   return (
     <div className="">
@@ -223,7 +244,10 @@ const CreatePlayer = ({
         </div>
 
         {/* Admin Dropdown */}
-        <div>
+
+         {
+           role!=="AGENT" && (
+            <div>
           <label className="block mb-1">Select Admin</label>
           <Select
             name="adminId"
@@ -248,33 +272,39 @@ const CreatePlayer = ({
             <span className="text-red-500 text-sm">{errors.adminId}</span>
           )}
         </div>
+           )
+         }
 
-         <div>
-         <label className="block mb-1">Select Agent</label>
-         <Select
-          name="agentId"
-          value={values.agentId}
-          onChange={(value) => formik.setFieldValue("agentId", value)}
-          onBlur={handleBlur}
-          placeholder="Select an Agent"
-          size="large"
-          className="w-full"
-          allowClear
-          showSearch
-          optionFilterProp="children"
-          status={touched.agentId && errors.agentId ? "error" : ""}
-          disabled={!agentsForSelectedAdmin.length} // disable if no agents
-        >
-          {agentsForSelectedAdmin.map((agent) => (
-            <Option key={agent.agentId} value={agent.agentId}>
-              {agent.agentName}
-            </Option>
-          ))}
-        </Select>
-        {touched.agentId && errors.agentId && (
-            <span className="text-red-500 text-sm">{errors.agentId}</span>
-          )}
-         </div>
+        {
+           role!=="AGENT" && (
+            <div>
+            <label className="block mb-1">Select Agent</label>
+            <Select
+             name="agentId"
+             value={values.agentId}
+             onChange={(value) => formik.setFieldValue("agentId", value)}
+             onBlur={handleBlur}
+             placeholder="Select an Agent"
+             size="large"
+             className="w-full"
+             allowClear
+             showSearch
+             optionFilterProp="children"
+             status={touched.agentId && errors.agentId ? "error" : ""}
+             disabled={!agentsForSelectedAdmin.length} // disable if no agents
+           >
+             {agentsForSelectedAdmin.map((agent) => (
+               <Option key={agent.agentId} value={agent.agentId}>
+                 {agent.agentName}
+               </Option>
+             ))}
+           </Select>
+           {touched.agentId && errors.agentId && (
+               <span className="text-red-500 text-sm">{errors.agentId}</span>
+             )}
+            </div>
+           )
+        }
 
         {/* Submit */}
         <div className="flex justify-end">

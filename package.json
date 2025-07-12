@@ -11,7 +11,7 @@
     "@tsparticles/react": "^3.0.0",
     "antd": "^5.22.7",
     "axios": "^1.7.9",
-    "chart.js": "^4.4.7",
+    "chart.js": "^4.5.0",
     "cra-template": "1.2.0",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",

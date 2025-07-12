@@ -44,10 +44,10 @@ const Navbar = () => {
           {/* Wallet */}
           <div
             onClick={() => navigate('/wallet')}
-            className="flex items-center gap-2 cursor-pointer hover:text-green-700 transition"
+            className="flex items-center gap-2 cursor-pointer hover:bg-green-700 text-green-700 hover:text-white transition border-[1px] border-green-600 rounded-xl p-2 shadow-sm "
           >
-            <FaWallet className="text-green-600 text-xl" />
-            <span className="font-semibold text-gray-800">${walletBalance.toFixed(2)}</span>
+            <FaWallet className=" text-xl hover:text-white" />
+            <span className="font-semibold  hover:text-white">${walletBalance.toFixed(2)}</span>
           </div>
 
           {/* Notifications */}
