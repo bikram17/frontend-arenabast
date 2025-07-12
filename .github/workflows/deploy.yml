@@ -1,0 +1,39 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Build React App
+      run: |
+        npm install
+        npm run build
+
+    - name: Copy Files to Droplet via SSH
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "build/*"
+        target: "/var/www/react-app"
+
+    - name: Restart Docker (Optional)
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker stop my-react-app || true
+          docker rm my-react-app || true
+          docker run -d -p 3000:80 --name my-react-app -v /var/www/react-app:/usr/share/nginx/html nginx:alpine
