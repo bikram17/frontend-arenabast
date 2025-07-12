@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Badge, Dropdown, Menu, Button } from 'antd';
+import { Avatar, Badge, Dropdown, Menu, } from 'antd';
 import { UserOutlined, LogoutOutlined, BellOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaBars, FaWallet } from "react-icons/fa6";

@@ -1,6 +1,5 @@
 
 import apiService from "../utils/apiservices"
-import { AxiosError } from 'axios';
 
 
 
@@ -25,7 +24,6 @@ export const updateUser=(id, payload)=>apiService.put(`/api/v1/users-list/${id}`
 export const deleteUser=(id)=>apiService.delete(`/api/admin/staff/${id}`);
 
 
-const ALL_USER_URL=`/api/v1/users-list`
 
 
 

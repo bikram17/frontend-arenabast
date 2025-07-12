@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Switch, Space, Input, Modal, Upload, Tag, notification } from "antd";
+import { Table, Button, Space, Input, Modal, Tag, notification } from "antd";
 import { GoPlus } from "react-icons/go";
 import {
   EyeOutlined,
@@ -8,7 +8,6 @@ import {
   SearchOutlined,
   FileExcelOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, } from "react-redux";
 import { deleteUserById, } from "../features/userSlice";
 import {  getAllPlayers } from "../api/userApi";
@@ -78,11 +77,11 @@ const Players = () => {
 
   
 
-  // Function to handle the switch state change
-  const handleStatusChange = (id, checked) => {
-    console.log(`Staff ID: ${id}, Active: ${checked}`);
-    // Update logic for the switch state can be added here, e.g., making an API call
-  };
+  // // Function to handle the switch state change
+  // const handleStatusChange = (id, checked) => {
+  //   console.log(`Staff ID: ${id}, Active: ${checked}`);
+  //   // Update logic for the switch state can be added here, e.g., making an API call
+  // };
 
 
 

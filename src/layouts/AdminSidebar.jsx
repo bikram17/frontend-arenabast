@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaHome, FaUsers, FaSignOutAlt, FaBars } from "react-icons/fa";
-import { FaPeopleGroup } from "react-icons/fa6";
-import { TbNotes } from "react-icons/tb";
-import { GrNotes } from "react-icons/gr";
+import { FaHome, FaUsers, FaBars } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../features/authSlice";
 import { Avatar, Modal } from "antd";
@@ -118,10 +115,7 @@ const AdminSidebar = () => {
     },
   ];
 
-  const userData = {
-    name: "Super Admin",
-    email: "supperadmin@gmail.com",
-  };
+
 
   return (
     <>

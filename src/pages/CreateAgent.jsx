@@ -59,7 +59,7 @@ const CreateAgent = ({fetchAllAgents, setIsCreate }) => {
 
   const fetchAllAdmins = async () => {
     try {
-      const { data, status } = await getAllAdmins();
+      const { data } = await getAllAdmins();
       if (data.status) {
         setAllAdmins(data.data);
       }

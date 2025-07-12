@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Input, Select, Button, notification } from "antd";
+import { Input, Button, notification } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createUser } from "../api/userApi";
-import { useNavigate } from "react-router-dom";
 
-const { Option } = Select;
+
+
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -22,7 +22,7 @@ const CreateUser = ({
   setIsCreate,
   fetchAllAdmins,
 }) => {
-  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({

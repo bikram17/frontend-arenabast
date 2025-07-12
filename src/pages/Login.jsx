@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../features/authSlice";
 import { loginAdmin } from "../api/loginApi";
@@ -114,12 +114,12 @@ const Login = () => {
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Don’t have an account?{" "}
-            <a
-              href="#"
+            <Link
+              
               className="text-green-600 hover:text-green-700 font-medium hover:underline"
             >
               Create a new account
-            </a>
+            </Link>
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 md:mt-8 flex flex-col gap-5">
@@ -175,12 +175,12 @@ const Login = () => {
 
             <div className="text-right text-sm mt-2">
               Forgot password?{" "}
-              <a
+              <Link
                 href="#"
                 className="text-green-600 font-medium hover:underline hover:text-green-700"
               >
                 Reset here
-              </a>
+              </Link>
             </div>
           </form>
         </div>

@@ -4,7 +4,6 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Admins from "./pages/Admins";
-import EditUser from "./pages/EditUser";
 import Transfer from "./pages/Transfer";
 import TransferRequset from "./pages/TransferRequset";
 import History from "./pages/History";
@@ -57,12 +56,7 @@ const routes = [
     layout: RootLayout,
     protected: true,
   },
-  {
-    path: "/edit/:id",
-    element: EditUser,
-    layout: RootLayout,
-    protected: true,
-  },
+
 
   {
     path: "/profile",

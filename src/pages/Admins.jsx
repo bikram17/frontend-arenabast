@@ -76,10 +76,10 @@ const Admins = () => {
   
 
   // Function to handle the switch state change
-  const handleStatusChange = (id, checked) => {
-    console.log(`Staff ID: ${id}, Active: ${checked}`);
-    // Update logic for the switch state can be added here, e.g., making an API call
-  };
+  // const handleStatusChange = (id, checked) => {
+  //   console.log(`Staff ID: ${id}, Active: ${checked}`);
+  //   // Update logic for the switch state can be added here, e.g., making an API call
+  // };
 
 
 

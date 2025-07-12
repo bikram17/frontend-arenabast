@@ -5,10 +5,7 @@ import * as Yup from "yup";
 import {
   createPlayer,
   getAdminAndAgents,
-  getAllAdmins,
-  getAllAgents,
 } from "../api/userApi";
-import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
