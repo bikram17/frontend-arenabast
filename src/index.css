@@ -1,0 +1,55 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.css-dip3t8{
+    background-color: #0a4820 !important;
+}
+
+.heading {
+    @apply text-black text-2xl font-bold;
+  }
+  
+  .green-button {
+    @apply bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 transition duration-300 flex items-center justify-center gap-1;
+  }
+  .green-outline-button {
+    @apply border border-green-700 text-green-700 px-4 py-2 rounded hover:bg-green-100 transition duration-300 flex items-center justify-center gap-1;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .animate-gradient-move {
+    background-size: 200% 200%;
+    animation: gradientMove 6s ease-in-out infinite;
+  }
+  
