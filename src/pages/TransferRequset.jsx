@@ -84,7 +84,7 @@ const TransferRequset = () => {
   return (
     <div 
     >
-      <div className='bg-white rounded-md shadow-sm p-4'>
+      <div className='rounded-md shadow-sm p-4'>
 
       </div>
     </div>

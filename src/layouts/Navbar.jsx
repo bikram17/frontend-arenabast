@@ -8,7 +8,7 @@ import { toggleSidebar } from '../features/toggleSidebarSlice';
 import userImage from "../assets/user.jpg"
 
 const Navbar = () => {
-  const { name, } = useSelector((state) => state.auth);
+  const { name,  walletBalance} = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Navbar = () => {
     console.log('Logged out');
   };
 
-  const walletBalance = 20.56;
+
 
   const menu = (
     <Menu>
@@ -34,8 +34,8 @@ const Navbar = () => {
   );
 
   return (
-    <div className="bg-white border-b shadow-sm sticky top-0 z-50">
-      <div className="flex justify-end items-center px-4 py-3  mx-auto">
+    <div className="bg-white border-b shadow-sm sticky top-0 z-50  w-full ">
+      <div className="flex justify-end items-center  px-4 py-3  mx-auto">
  
     
 

@@ -3,18 +3,22 @@ import WalletHeader from '../components/WalletHeader'
 import WalletChart from '../components/WalletChart'
 import WalletActions from '../components/WalletActions'
 import TransactionList from '../components/TransactionList'
+import { useSelector } from 'react-redux'
 
 const Wallet = () => {
+  const {walletBalance ,name} = useSelector((state) => state.auth);
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 space-y-4">
-          <WalletHeader />
-         
-          <TransactionList />
+    <div className="p-4 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Left Section (Header + Transactions) */}
+        <div className="lg:col-span-2 space-y-4">
+          <WalletHeader walletBalance={walletBalance.toFixed(2)} userName={name} />
+          <TransactionList  />
         </div>
-        <div>
-          <WalletActions />
+
+        {/* Right Section (Actions + Chart) */}
+        <div className="space-y-4">
+          <WalletActions walletBalance={walletBalance.toFixed(2)} />
           <WalletChart />
         </div>
       </div>

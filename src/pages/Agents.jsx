@@ -134,6 +134,12 @@ const Agents = () => {
         ),
     },
     {
+      title: "Wallet Balance",
+      dataIndex: "walletBalance",
+      key: "walletBalance",
+      render: (balance) => <strong>${balance.toFixed(2)}</strong>,
+    },
+    {
       title: "",
       key: "",
       width: 150,
@@ -189,6 +195,7 @@ const Agents = () => {
        const payload={
         userId: userInfo.id,
         amount: balance,
+        userRole:userInfo.roleType,
        }
       const {data}=await addWalletBalanceToAdmin(payload);
       console.log("Data", data)
@@ -199,6 +206,7 @@ const Agents = () => {
           description: 'Wallet balance has been added successfully.',
         });
         handleAddWalletModalClose();
+        fetchAllAgents();
       }   
     } catch (error) {
       setWalletLoading(false);

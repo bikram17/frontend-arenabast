@@ -1,7 +1,7 @@
 import LazyImage from './LazyImage'
 import moneyMenImage from '../assets/boy.png'
 
-const WalletHeader = () => (
+const WalletHeader = ({walletBalance, userName}) => (
   <div className="bg-gradient-to-r from-green-900 to-green-400 p-6 rounded-xl shadow-md text-white">
     <div className="flex justify-between items-center gap-6">
       
@@ -11,8 +11,8 @@ const WalletHeader = () => (
       {/* Right - Balance Info */}
       <div>
         <p className="text-sm text-white/80">Available Balance</p>
-        <h1 className="text-4xl font-extrabold tracking-wide mt-1">$673,412.66</h1>
-        <p className="text-sm text-white/70 mt-2">Welcome back, <span className="font-medium">William Fayson</span></p>
+        <h1 className="text-4xl font-extrabold tracking-wide mt-1">${walletBalance}</h1>
+        <p className="text-sm text-white/70 mt-2">Welcome back, <span className="font-medium">{userName}</span></p>
       </div>
     </div>
   </div>

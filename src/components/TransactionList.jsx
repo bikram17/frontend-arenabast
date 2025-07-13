@@ -35,7 +35,7 @@ const columns = [
     render: (type) => (
       <Tag
         color={type === 'income' ? 'green' : 'red'}
-        className="text-sm px-3 py-1 rounded-full flex items-center gap-1 w-[60%]"
+        className="text-sm px-3 py-1 rounded-full flex items-center gap-1 w-full xl:w-[60%]"
       >
         <span className="flex items-center gap-1">
           {type === 'income' ? (
@@ -77,6 +77,7 @@ const TransactionList = () => {
         pagination={false}
         rowKey={(record, index) => index}
         bordered
+        scroll={{ x: "max-content" }}
       />
     </div>
   )

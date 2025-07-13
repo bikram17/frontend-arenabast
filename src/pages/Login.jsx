@@ -54,6 +54,7 @@ const Login = () => {
             name: getNameForAdmin(data?.data?.role),
             email: data?.data?.email || "example@gmail.com",
             role: data?.data?.role,
+            id:data?.data?.id
           })
         );
         notification.success({

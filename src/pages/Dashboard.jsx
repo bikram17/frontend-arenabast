@@ -1,10 +1,34 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getWalletBalance } from "../api/walletApi";
+import { setWalletBalance } from "../features/authSlice";
 
 const Dashboard = () => {
-  const { name } = useSelector((state) => state.auth);
+  const {name} = useSelector((state) => state.auth);
+  const dispatch=useDispatch();
+   
+  useEffect(()=>{
+
+    // fetch wallet balance 
+    const fetchWalletBalance=async()=>{
+      try {
+        const {data}=await getWalletBalance();
+        if(data.status){
+          dispatch(setWalletBalance(data?.data.currentBalance))
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchWalletBalance()
+
+  },[dispatch])
+
+
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-center">
+    <div className="min-h-screen p-6 flex justify-center items-center">
       <div className="text-center">
         <h1 className="text-4xl font-extrabold text-green-700 mb-4">
           🎮 {name} Dashboard

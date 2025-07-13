@@ -114,6 +114,12 @@ const Admins = () => {
       render: (date) => dayjs(date).format("YYYY-MM-DD HH:mm"),
     },
     {
+      title: "Wallet Balance",
+      dataIndex: "walletBalance",
+      key: "walletBalance",
+      render: (balance) => <strong>${balance.toFixed(2)}</strong>,
+    },
+    {
       title: "Status",
       dataIndex: "active",
       key: "active",
@@ -181,9 +187,9 @@ const Admins = () => {
        const payload={
         userId: userInfo.id,
         amount: balance,
+        userRole:userInfo.roleType,
        }
       const {data}=await addWalletBalanceToAdmin(payload);
-      console.log("Data", data)
       if(data.status){
         setWalletLoading(false);
         notification.success({
@@ -191,6 +197,7 @@ const Admins = () => {
           description: 'Wallet balance has been added successfully.',
         });
         handleAddWalletModalClose();
+        fetchAllAdmins();
       }   
     } catch (error) {
       setWalletLoading(false);
